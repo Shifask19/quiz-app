@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Quiz</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-image: url('background.jpg');">
+<div class="container">
+  <h1>Kids Quiz</h1>
+  <div id="question-container">
+    <h2 id="question"></h2>
+    <div id="options"></div>
+  </div>
+  <div id="button-container">
+    <button id="back-btn" onclick="goBack()">Back</button>
+    <button id="next-btn" onclick="nextQuestion()">Next</button>
+  </div>
+  <div id="result"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
+
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.7); /* Adding opacity for better readability */
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+#options {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#button-container {
+  text-align: center;
+}
+
+#back-btn {
+  margin-right: 10px;
+}
+</style>
+
+<script>
+    const questions = [
+      {question: "What animal is known for its long neck?", options: ["Giraffe", "Elephant", "Lion", "Tiger"], answer: "Giraffe"},
+      {question: "What color is an apple?", options: ["Red", "Blue", "Yellow", "Green"], answer: "Red"},
+      {question: "What is the tallest mammal?", options: ["Elephant", "Giraffe", "Horse", "Dog"], answer: "Giraffe"},
+      {question: "How many legs does a spider have?", options: ["4", "6", "8", "10"], answer: "8"},
+      {question: "Which planet is known as the Red Planet?", options: ["Earth", "Jupiter", "Mars", "Saturn"], answer: "Mars"},
+      {question: "What is the capital of France?", options: ["London", "Paris", "Rome", "Berlin"], answer: "Paris"},
+      {question: "Which animal says 'meow'?", options: ["Dog", "Cat", "Cow", "Bird"], answer: "Cat"},
+      {question: "What do caterpillars turn into?", options: ["Butterflies", "Spiders", "Bees", "Ants"], answer: "Butterflies"},
+      {question: "What is the color of the sun?", options: ["Yellow", "Red", "Blue", "Green"], answer: "Yellow"},
+      {question: "What is the main ingredient in a sandwich?", options: ["Bread", "Cheese", "Tomato", "Egg"], answer: "Bread"}
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    
+    const questionElement = document.getElementById('question');
+    const optionsElement = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const backBtn = document.getElementById('back-btn');
+    const resultElement = document.getElementById('result');
+    
+    function loadQuestion() {
+      const currentQuestionData = questions[currentQuestion];
+      questionElement.textContent = currentQuestionData.question;
+      optionsElement.innerHTML = '';
+      currentQuestionData.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.onclick = () => checkAnswer(index);
+        optionsElement.appendChild(button);
+      });
+    }
+    
+    function checkAnswer(selectedIndex) {
+      const currentQuestionData = questions[currentQuestion];
+      const selectedOption = currentQuestionData.options[selectedIndex];
+      const correctAnswer = currentQuestionData.answer;
+      if (selectedOption === correctAnswer) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+    
+    function showResult() {
+      if (score < 5) {
+        resultElement.textContent = `Improvement required. Your score is: ${score}/${questions.length}`;
+      } else if (score >= 5 && score <= 8) {
+        resultElement.textContent = `Performance better. Your score is: ${score}/${questions.length}`;
+      } else {
+        resultElement.textContent = `Excellent! Your score is: ${score}/${questions.length}`;
+      }
+      nextBtn.style.display = 'none';
+      backBtn.style.display = 'none';
+    }
+    
+    function nextQuestion() {
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+    
+    function goBack() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+      }
+    }
+    
+    loadQuestion();
+    </script>
+    
+    
+    
